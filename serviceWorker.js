@@ -1,10 +1,10 @@
 const staticDev = "5000-le-jeu"
 const assets = [
-    "/{repository}/",
-    '/{repository}/index.html',
-    '/{repository}/assets/css/styles.css',
-    '/{repository}/assets/css/bootstrap.css',
-    '/{repository}/assets/css/mains.css', ,
+    "/5000_le_jeu/",
+    '/5000_le_jeu/index.html',
+    '/5000_le_jeu/assets/css/styles.css',
+    '/5000_le_jeu/assets/css/bootstrap.css',
+    '/5000_le_jeu/assets/css/mains.css', ,
 ]
 
 self.addEventListener("install", installEvent => {
