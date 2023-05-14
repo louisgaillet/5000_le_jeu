@@ -41,7 +41,7 @@ function createPlayer(name)
     nDiv = document.createElement('div');
     nDiv.id = `nameP-${name}`;
     nDiv.innerHTML = name;
-    nDiv.className = "namePstyle col-6 text-left joueur_name font-weight-bold h6 mb-0";
+    nDiv.className = "namePstyle col-4 text-left joueur_name font-weight-bold h6 mb-0";
     nDiv.dataset.id = idGenere
     nDiv.onclick = function () { selectPlayer(this); };
 
@@ -58,9 +58,16 @@ function createPlayer(name)
     rDiv.innerHTML = inStorage ? (5000 - inStorage.score) : 5000;
     rDiv.className = "namePstyle col-3 text-center h6 mb-0 score-restant-item";
 
+    editDiv = document.createElement('div');
+    editDiv.dataset.id = idGenere
+    editDiv.innerHTML = "<span> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34\"></path><polygon points=\"18 2 22 6 12 16 8 16 8 12 18 2\"></polygon></svg> </span>";
+    editDiv.className = "edit-score col-2";
+    editDiv.onclick = function () { editScore(idGenere); };
+
     iDiv.appendChild(nDiv);
     iDiv.appendChild(sDiv);
     iDiv.appendChild(rDiv);
+    iDiv.appendChild(editDiv);
 
 
     if (!inStorage){
@@ -174,5 +181,24 @@ function getNextPlayer(){
     }
 }
 
+function editScore(id){
+    document.getElementById('edit-score').classList.remove('d-none')
+    selectedP = id;
+}
+
+function cancelScore(){
+    document.getElementById('edit-score').classList.add('d-none')
+    selectPlayer(document.querySelector('.joueur_name'))
+}
+
+function onSubmitEditScore(){
+    let score =  document.getElementById('input-edit-score').value;
+    const divScore = document.querySelector(`.score-item[data-id="${selectedP}"]`);
+    divScore.innerHTML = 0
+    document.getElementById('displayScore').innerHTML = score;
+    pushScore()
+    document.getElementById('edit-score').classList.add('d-none')
+
+}
 
 init()
