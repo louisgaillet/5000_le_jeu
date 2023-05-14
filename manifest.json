@@ -1,6 +1,6 @@
 {
   "name": "5000 le jeu",
-  "short_name": "500",
+  "short_name": "5000",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#fdfdfd",
