@@ -1,5 +1,23 @@
 let selectedP = '';
-
+let partie =null;
+let partieId =localStorage.getItem('partieId');
+function init(){
+    if (!partieId || !localStorage.getItem(partieId)){
+        partieId = Date.now();
+        localStorage.setItem('partieId', partieId);
+        let partie = {
+            joueurs:[]
+        }
+        console.log(partieId,JSON.stringify(partie))
+        localStorage.setItem(partieId,JSON.stringify(partie))
+    }
+    partie = JSON.parse(localStorage.getItem(partieId))
+    partie.joueurs.forEach(joueur => createPlayer(joueur.name))
+    if (partie.joueurs.length){
+        selectPlayer(document.querySelector('.joueur_name'))
+        start();
+    }
+}
 function addPlayer() {
 
     let x = document.getElementById("namePlayer");
@@ -7,45 +25,62 @@ function addPlayer() {
     if (x.value.length < 3)
         return;
     else {
+        createPlayer(x.value)
+        x.value='';
+    }
+}
 
-        let iDiv = document.createElement('div');
-        let idGenere = Date.now();
-        iDiv.id = 'player-' + x.value;
-        iDiv.className = 'player row border-1 p-2';
+function createPlayer(name)
+{
+    let inStorage = partie.joueurs.find(joueur => joueur.name === name);
+    let iDiv = document.createElement('div');
+    let idGenere = inStorage ? inStorage.id : Date.now();
+    iDiv.id = `player-${name}`;
+    iDiv.className = 'player row border-1 p-2';
 
-        nDiv = document.createElement('div');
-        nDiv.id = "nameP-" + x.value;
-        nDiv.innerHTML = x.value;
-        nDiv.className = "namePstyle col-6 text-left joueur_name font-weight-bold h6 mb-0";
-        nDiv.dataset.id = idGenere
-        nDiv.onclick = function () { selectPlayer(this); };
+    nDiv = document.createElement('div');
+    nDiv.id = `nameP-${name}`;
+    nDiv.innerHTML = name;
+    nDiv.className = "namePstyle col-6 text-left joueur_name font-weight-bold h6 mb-0";
+    nDiv.dataset.id = idGenere
+    nDiv.onclick = function () { selectPlayer(this); };
 
-        sDiv = document.createElement('div');
-        sDiv.id = "scoreP-" + x.value;
-        sDiv.dataset.id = idGenere
-        sDiv.innerHTML = "0";
-        sDiv.className = "namePstyle col-3 text-center h6 mb-0 score-item";
+    sDiv = document.createElement('div');
+    sDiv.id = `scoreP-${name}`;
+    sDiv.dataset.id = idGenere
+    sDiv.innerHTML = inStorage ? inStorage.score : 0;
+    sDiv.className = "namePstyle col-3 text-center h6 mb-0 score-item";
 
-        rDiv = document.createElement('div');
-        rDiv.id = "restP-" + x.value;
-        rDiv.dataset.id = idGenere
-        rDiv.innerHTML = "5000";
-        rDiv.className = "namePstyle col-3 text-center h6 mb-0 score-restant-item";
+    rDiv = document.createElement('div');
+    rDiv.id = `restP-${name}`;
 
-        iDiv.appendChild(nDiv);
-        iDiv.appendChild(sDiv);
-        iDiv.appendChild(rDiv);
-        document.getElementById('scores').appendChild(iDiv);
-        const playersLength= document.getElementsByClassName('joueur_name').length
-        if (playersLength === 1) {
-            const elem = document.getElementById('blockScore');
-            elem.classList.remove("d-none");
-        }
+    rDiv.dataset.id = idGenere
+    rDiv.innerHTML = inStorage ? (5000 - inStorage.score) : 5000;
+    rDiv.className = "namePstyle col-3 text-center h6 mb-0 score-restant-item";
 
-        if (playersLength === 2){
-            document.querySelector('#startButton').disabled = false;
-        }
-        x.value = '';
+    iDiv.appendChild(nDiv);
+    iDiv.appendChild(sDiv);
+    iDiv.appendChild(rDiv);
+
+
+    if (!inStorage){
+        partie.joueurs.push({
+            name:name,
+            score:0,
+            id:idGenere
+        })
+        localStorage.setItem(partieId,JSON.stringify(partie))
+    }
+
+    document.getElementById('scores').appendChild(iDiv);
+    const playersLength= document.getElementsByClassName('joueur_name').length
+    if (playersLength === 1) {
+        const elem = document.getElementById('blockScore');
+        elem.classList.remove("d-none");
+    }
+
+    if (playersLength === 2){
+        document.querySelector('#startButton').disabled = false;
     }
 }
 
@@ -67,7 +102,11 @@ function start() {
     elem3.classList.remove('d-none');
     elem3.classList.add('d-flex');
 
+}
 
+function restart(){
+    localStorage.removeItem(partieId);
+    location.reload()
 }
 
 function calcScore(num) {
@@ -105,6 +144,9 @@ function pushScore() {
     const divScoreRestant = document.querySelector(`.score-restant-item[data-id="${selectedP}"]`);
     const scoreCurr = divScore.textContent;
     const newscore = (parseInt(score) + parseInt(scoreCurr)).toString();
+    let playerInStorage = partie.joueurs.find(joueur => joueur.id === parseInt(selectedP));
+    playerInStorage.score = newscore;
+    localStorage.setItem(partieId,JSON.stringify(partie))
     divScore.innerHTML = newscore;
     divScoreRestant.innerHTML = (5000 - parseInt(newscore)).toString();
     document.getElementById('displayScore').innerHTML = "0";
@@ -131,3 +173,6 @@ function getNextPlayer(){
         return nextPlayer
     }
 }
+
+
+init()
