@@ -204,5 +204,5 @@ function onSubmitEditScore(){
 init()
 
 if (navigator.serviceWorker) {
-    navigator.serviceWorker.register('/{repository}/serviceWorker.js', {scope: '/{repository}/'})
+    navigator.serviceWorker.register('/5000_le_jeu/serviceWorker.js', {scope: '/{repository}/'})
 }
