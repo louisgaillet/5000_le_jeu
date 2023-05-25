@@ -8,7 +8,6 @@ function init(){
         let partie = {
             joueurs:[]
         }
-        console.log(partieId,JSON.stringify(partie))
         localStorage.setItem(partieId,JSON.stringify(partie))
     }
     partie = JSON.parse(localStorage.getItem(partieId))
@@ -74,7 +73,7 @@ function createPlayer(name)
         partie.joueurs.push({
             name:name,
             score:0,
-            id:idGenere
+            id:idGenere,
         })
         localStorage.setItem(partieId,JSON.stringify(partie))
     }
@@ -162,6 +161,9 @@ function pushScore() {
     localStorage.setItem(partieId,JSON.stringify(partie))
     divScore.innerHTML = newscore;
     divScoreRestant.innerHTML = (5000 - parseInt(newscore)).toString();
+    if (parseInt(divScoreRestant.innerHTML) === 0){
+        document.getElementById('container-pyro').classList.remove('d-none')
+    }
     document.getElementById('displayScore').innerHTML = "0";
     const nextPlayer = getNextPlayer()
     if (nextPlayer){
@@ -204,6 +206,7 @@ function onSubmitEditScore(){
     document.getElementById('displayScore').innerHTML = score;
     pushScore()
     document.getElementById('edit-score').classList.add('d-none')
+    document.getElementById('container-pyro').classList.add('d-none')
 
 }
 
