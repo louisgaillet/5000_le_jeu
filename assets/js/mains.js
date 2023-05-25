@@ -139,6 +139,7 @@ function clearScore() {
 }
 
 function selectPlayer(element) {
+    document.getElementById('container-pyro').classList.add('d-none')
     selectedP = element.dataset.id;
     const listP = document.getElementsByClassName('joueur_name');
 
