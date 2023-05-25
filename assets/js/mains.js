@@ -118,12 +118,18 @@ function restart(){
 
 function calcScore(num) {
     const elem = document.getElementById('displayScore');
-    const newCurrScore = (parseInt(elem.textContent) + num).toString();
-    elem.innerHTML = newCurrScore;
+    const newCurrScore = (parseInt(elem.textContent) + num);
+    let playerInStorage = partie.joueurs.find(joueur => joueur.id === parseInt(selectedP));
+    let scoreCurrentPlayer = parseInt(playerInStorage.score);
+    if (scoreCurrentPlayer+newCurrScore > 5000){
+        document.getElementById('pushScore').disabled = true;
+    }
+    elem.innerHTML = newCurrScore.toString();
 
 }
 
 function clearScore() {
+    document.getElementById('pushScore').disabled = false;
     const elem = document.getElementById('displayScore');
     elem.innerHTML = "0";
 
@@ -201,9 +207,17 @@ function onSubmitEditScore(){
 
 }
 
+const inputNumberEdited = document.getElementById('input-edit-score');
+inputNumberEdited.addEventListener("keyup", function() {
+    if (inputNumberEdited.value > 5000) {
+        inputNumberEdited.value = 5000;
+    }
+    if (inputNumberEdited.value < 0) {
+        inputNumberEdited.value = 0;
+    }
+});
 init()
 
 if (navigator.serviceWorker) {
-    console.log('register')
     navigator.serviceWorker.register('/5000_le_jeu/serviceWorker.js')
 }
