@@ -120,8 +120,9 @@ function restart(){
 }
 
 function calcScore(num) {
+    window.navigator.vibrate(200)
     if (navigator.vibrate) {
-        navigator.vibrate(200);
+        navigator.vibrate(500);
     }
     const elem = document.getElementById('displayScore');
     const newCurrScore = (parseInt(elem.textContent) + num);
