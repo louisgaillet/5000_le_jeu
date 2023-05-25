@@ -120,6 +120,9 @@ function restart(){
 }
 
 function calcScore(num) {
+    if (navigator.vibrate) {
+        navigator.vibrate(200);
+    }
     const elem = document.getElementById('displayScore');
     const newCurrScore = (parseInt(elem.textContent) + num);
     let playerInStorage = partie.joueurs.find(joueur => joueur.id === parseInt(selectedP));
