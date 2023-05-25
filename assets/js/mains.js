@@ -11,7 +11,7 @@ function init(){
         localStorage.setItem(partieId,JSON.stringify(partie))
     }
     partie = JSON.parse(localStorage.getItem(partieId))
-    partie.joueurs.forEach(joueur => createPlayer(joueur.name))
+    partie.joueurs.forEach(joueur => createPlayer(joueur.name,joueur.id))
     if (partie.joueurs.length){
         selectPlayer(document.querySelector('.joueur_name'))
         start();
@@ -29,9 +29,13 @@ function addPlayer() {
     }
 }
 
-function createPlayer(name)
+function createPlayer(name,id=null)
 {
-    let inStorage = partie.joueurs.find(joueur => joueur.name === name);
+    let inStorage = null;
+    if (id){
+        inStorage = partie.joueurs.find(joueur => joueur.id === id);
+    }
+
     let iDiv = document.createElement('div');
     let idGenere = inStorage ? inStorage.id : Date.now();
     iDiv.id = `player-${name}`;
@@ -135,9 +139,9 @@ function clearScore() {
 }
 
 function selectPlayer(element) {
-    const pSelect = element.textContent;
     selectedP = element.dataset.id;
     const listP = document.getElementsByClassName('joueur_name');
+
     for (let i = 0; i < listP.length; i++) {
         if ((listP[i].dataset.id) === selectedP) {
             listP[i].parentNode.classList.add('selected');
@@ -146,6 +150,8 @@ function selectPlayer(element) {
             listP[i].parentNode.classList.remove("selected");
         }
     }
+    let selectedElement = document.querySelector(".selected");
+    selectedElement.scrollIntoView();
 }
 
 

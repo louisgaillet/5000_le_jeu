@@ -96,7 +96,12 @@ btn-primary-5000{
     height: 100vh;
 }
 
-
+#container-nouvelle-partie{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
 .pyro > .before, .pyro > .after {
     position: absolute;
     width: 5px;
