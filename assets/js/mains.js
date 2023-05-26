@@ -120,7 +120,10 @@ function restart(){
 }
 
 function calcScore(num) {
-   
+
+    if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(50);
+    }
 
     const elem = document.getElementById('displayScore');
     const newCurrScore = (parseInt(elem.textContent) + num);
@@ -141,7 +144,6 @@ function clearScore() {
 }
 
 function selectPlayer(element) {
-    document.getElementById('container-pyro').classList.add('d-none')
     selectedP = element.dataset.id;
     const listP = document.getElementsByClassName('joueur_name');
 
